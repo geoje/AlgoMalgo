@@ -1,4 +1,4 @@
-#include <cstdio> // For Test
+// #include <cstdio> // For Test
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -10,12 +10,16 @@ matrix operator*(matrix &a, matrix &b)
     matrix c(s, vector<int>(s));
     for (int i = 0; i < s; i++)
         for (int j = 0; j < s; j++)
+        {
             for (int k = 0; k < s; k++)
                 c[i][j] += a[i][k] * b[k][j];
+            c[i][j] %= 1000;
+        }
     return c;
 }
 
-int n, b;
+int n;
+long long b;
 matrix ans, base;
 
 int main(int argc, char *argv[])
@@ -23,7 +27,7 @@ int main(int argc, char *argv[])
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    freopen(argv[1], "r", stdin); // For Test
+    // freopen(argv[1], "r", stdin); // For Test
 
     // Input
     cin >> n >> b;
