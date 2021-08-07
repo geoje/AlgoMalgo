@@ -24,7 +24,7 @@
       ],
       "preLaunchTask": "C/C++: g++ 활성 파일 빌드",
       // "miDebuggerPath": "/usr/bin/gdb" // For Linux
-      "miDebuggerPath": "C:\\MinGW\\bin\\gdb" // For Window
+      "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe" // For Window
     }
   ]
 }
