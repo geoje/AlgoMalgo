@@ -9,7 +9,7 @@ struct node
     int time, pos;
 };
 
-int n, k, prevTime = 0, counts[2][100001] = {0};
+int n, k, prevTime = -1, counts[2][100001] = {0};
 
 queue<node> nodes;
 
@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
     cin >> n >> k;
 
     // Process
-    int *curCounts = counts[0], *futureCounts = counts[1];
-    curCounts[n] = 1;
+    int *curCounts, *futureCounts;
+    counts[0][n] = 1;
     nodes.push({0, n});
     while (!nodes.empty())
     {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
                 nodes.push({node.time, node.pos - 1});
             futureCounts[node.pos - 1] += curCounts[node.pos];
         }
-        if (node.pos < 100000)
+        if (node.pos < k && node.pos < 100000)
         {
             if (futureCounts[node.pos + 1] == 0)
                 nodes.push({node.time, node.pos + 1});
