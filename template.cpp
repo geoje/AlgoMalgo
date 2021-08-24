@@ -11,12 +11,12 @@ int main(int argc, char *argv[])
     cout.tie(0);
     // freopen(argv[1], "r", stdin); // For Test
 
-    // Input
+    /* Input */
     cin >> n;
 
-    // Process
+    /* Process */
 
-    // Output
+    /* Output */
     cout << n << '\n';
     return 0;
 }
