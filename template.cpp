@@ -6,9 +6,7 @@ int n;
 
 int main(int argc, char *argv[])
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    cin.tie(0)->sync_with_stdio(0);
     freopen(argv[1], "r", stdin); // For Test
 
     /* Input */
