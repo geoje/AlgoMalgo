@@ -46,10 +46,12 @@ int main(int argc, char *argv[])
     /* Process */
     while (--n)
     {
+        // pq에서 뽑은게 연결 되어 있을 경우 패스
         while (findUnion(pq.top().from) == findUnion(pq.top().to))
             pq.pop();
 
-        par[pq.top().from] = findUnion(pq.top().to);
+        // 둘을 연결 시키고 정답 갱신
+        par[findUnion(pq.top().from)] = findUnion(pq.top().to);
         ans += pq.top().dis;
         pq.pop();
     }
