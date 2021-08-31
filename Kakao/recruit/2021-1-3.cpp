@@ -1,9 +1,15 @@
-#include <set>
-#include <map>
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <unordered_map>
 using namespace std;
+
+struct group
+{
+    bool sorted = false;
+    vector<int> scores;
+};
 
 // refine 함수를 위한 선별때 필요한 상수배열
 const pair<char, int> types[] = {
@@ -23,7 +29,7 @@ const pair<char, int> types[] = {
 // right: bit masking | 1: cpp, 2: java, 4: python, 8: backend, 16: frontend
 //                    | 32: junior, 64: senior, 128:chicken, 256: pizza
 //                    | pizza / chicken/sen/jun/front / back/py/java/cpp
-pair<int, int> refine(string str)
+pair<int, int> refineInfo(string str)
 {
     int person = 0, t = 1, i = 0;
 
@@ -36,16 +42,7 @@ pair<int, int> refine(string str)
     }
 
     while (t <= 8)
-        // "and" for query
-        if (str[i] == 'a')
-            i += 4;
-        // wildcard for query
-        else if (str[i] == '-')
-        {
-            t += 2;
-            i += 2;
-        }
-        else if (str[i] == types[t].first)
+        if (str[i] == types[t].first)
         {
             person |= 1 << t;
             i += types[t].second + 1;
@@ -56,49 +53,88 @@ pair<int, int> refine(string str)
 
     return {stoi(str.substr(i)), person};
 }
-
-void combination(vector<int> &picked, vector<int> &bits, int cur, int i)
+pair<int, int> refineQuery(string str)
 {
-    if (i == bits.size())
+    int person = 0, t = 1, i = 0;
+
+    // 2개씩 처리를 위해 첫번째를 미리 처리
+    if (str[0] == types[0].first)
     {
-        picked.push_back(cur);
-        return;
+        person = 1;
+        t = 3;
+        i = types[0].second + 5;
     }
 
-    combination(picked, bits, cur, i + 1);
-    combination(picked, bits, cur | (1 << bits[i]), i + 1);
+    while (t <= 8)
+        // wildcard for query
+        if (str[i] == '-')
+        {
+            t += 2;
+            i += 6;
+        }
+        else if (str[i] == types[t].first)
+        {
+            person |= 1 << t;
+            i += types[t].second + 5;
+            t += t % 2 ? 2 : 1;
+        }
+        else
+            t++;
+
+    return {stoi(str.substr(i - 4)), person};
+}
+
+int lower_bound(vector<int> &nums, int key)
+{
+    int left = 0, mid, right = nums.size();
+
+    while (left < right)
+    {
+        mid = (left + right) / 2;
+        if (key <= nums[mid])
+            right = mid;
+        else
+            left = mid + 1;
+    }
+
+    return left;
 }
 
 vector<int> solution(vector<string> infos, vector<string> querys)
 {
     vector<int> answer;
-    map<int, multiset<int>> people;
+    unordered_map<int, group> people;
 
     // 사용자 정제
     for (string info : infos)
     {
-        auto person = refine(info);
+        auto person = refineInfo(info);
         vector<int> groups, bits;
 
         // 비트 위치 파악
-        for (int n = person.second, j = 0; n > 0; n /= 2, j++)
-            if (n & 1)
-                bits.push_back(j);
+        for (int n = 1 << 8; n; n >>= 1)
+            if (person.second & n)
+                bits.push_back(n);
 
         // 모든 그룹에 점수 입력
-        combination(groups, bits, 0, 0);
-        for (int group : groups)
-            people[group].insert(person.first);
+        for (int a = 0; a <= bits[0]; a += bits[0])
+            for (int b = 0; b <= bits[1]; b += bits[1])
+                for (int c = 0; c <= bits[2]; c += bits[2])
+                    for (int d = 0; d <= bits[3]; d += bits[3])
+                        people[a + b + c + d].scores.push_back(person.first);
     }
 
     // 쿼리 처리
     for (string query : querys)
     {
-        answer.push_back(0);
-        pair<int, int> rq = refine(query);
-        auto s = people[rq.second];
-        for (auto it = s.upper_bound(rq.first - 1); it != s.end(); it++)
-            answer.back()++;
+        pair<int, int> rq = refineQuery(query);
+        group g = people[rq.second];
+        if (!g.sorted)
+        {
+            g.sorted = true;
+            sort(g.scores.begin(), g.scores.end());
+        }
+        answer.push_back(g.scores.size() - lower_bound(g.scores, rq.first));
     }
 
     return answer;
