@@ -2,7 +2,6 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include <unordered_map>
 using namespace std;
 
 struct group
@@ -103,7 +102,7 @@ int lower_bound(vector<int> &nums, int key)
 vector<int> solution(vector<string> infos, vector<string> querys)
 {
     vector<int> answer;
-    unordered_map<int, group> people;
+    group people[1 << 9];
 
     // 사용자 정제
     for (string info : infos)
@@ -143,19 +142,41 @@ vector<int> solution(vector<string> infos, vector<string> querys)
 int main(int argc, char *argv[])
 {
     cin.tie(0)->sync_with_stdio(0);
-    for (int num : solution({"java backend junior pizza 150",
-                             "python frontend senior chicken 210",
-                             "python frontend senior chicken 150",
-                             "cpp backend senior pizza 260",
-                             "java backend junior chicken 80",
-                             "python backend senior chicken 50"},
-                            {"java and backend and junior and pizza 100",
-                             "python and frontend and senior and chicken 200",
-                             "cpp and - and senior and pizza 250",
-                             "- and backend and senior and - 150",
-                             "- and - and - and chicken 100",
-                             "- and - and - and - 150"}))
+
+    // for (int num : solution({"java backend junior pizza 150",
+    //                          "python frontend senior chicken 210",
+    //                          "python frontend senior chicken 150",
+    //                          "cpp backend senior pizza 260",
+    //                          "java backend junior chicken 80",
+    //                          "python backend senior chicken 50"},
+    //                         {"java and backend and junior and pizza 100",
+    //                          "python and frontend and senior and chicken 200",
+    //                          "cpp and - and senior and pizza 250",
+    //                          "- and backend and senior and - 150",
+    //                          "- and - and - and chicken 100",
+    //                          "- and - and - and - 150"}))
+    //     cout << num << ' ';
+
+    vector<string> infos, querys;
+    for (int i = 0; i < 50000; i++)
+    {
+        string a = rand() % 3 ? (rand() % 2 ? "cpp " : "java ") : "python ";
+        string b = rand() % 2 ? "backend " : "frontend ";
+        string c = rand() % 2 ? "junior " : "senior ";
+        string d = rand() % 2 ? "pizza " : "chicken ";
+        infos.push_back(a + b + c + d + to_string(rand() % 100 * 10));
+    }
+    for (int i = 0; i < 10000; i++)
+    {
+        string a = rand() % 2 ? (rand() % 2 ? "cpp" : "java") : (rand() % 2 ? "python" : "-");
+        string b = rand() % 3 ? (rand() % 2 ? "backend" : "frontend") : "-";
+        string c = rand() % 3 ? (rand() % 2 ? "junior" : "senior") : "-";
+        string d = rand() % 3 ? (rand() % 2 ? "pizza " : "chicken ") : "- ";
+        querys.push_back(a + " and " + b + " and " + c + " and " + d + to_string(rand() % 100 * 10));
+    }
+    for (int num : solution(infos, querys))
         cout << num << ' ';
+
     cout << '\n';
     return 0;
 }
