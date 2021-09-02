@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
         string d = rand() % 2 ? "pizza " : "chicken ";
         infos.push_back(a + b + c + d + to_string(rand() % 100 * 10));
     }
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < 1000; i++)
     {
         string a = rand() % 2 ? (rand() % 2 ? "cpp" : "java") : (rand() % 2 ? "python" : "-");
         string b = rand() % 3 ? (rand() % 2 ? "backend" : "frontend") : "-";
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
         string d = rand() % 3 ? (rand() % 2 ? "pizza " : "chicken ") : "- ";
         querys.push_back(a + " and " + b + " and " + c + " and " + d + to_string(rand() % 100 * 10));
     }
-    for (int num : solution(infos, querys))
+    for (int &num : solution(infos, querys))
         cout << num << ' ';
 
     cout << '\n';
