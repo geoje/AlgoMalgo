@@ -4,136 +4,88 @@
 #include <algorithm>
 using namespace std;
 
-struct group
+vector<vector<pair<int, int>>> typeSets = {
+    {{'c', 4},
+     {'j', 5},
+     {'p', 7}},
+    {{'b', 8},
+     {'f', 9}},
+    {{'j', 7},
+     {'s', 7}},
+    {{'c', 8},
+     {'p', 6}}};
+
+vector<int> refineInfo(string str)
 {
-    bool sorted = false;
-    vector<int> scores;
-};
+    vector<int> result;
+    int i = 0;
 
-// refine 함수를 위한 선별때 필요한 상수배열
-const pair<char, int> types[] = {
-    {'c', 3}, // 0: cpp
-    {'j', 4}, // 1: java
-    {'p', 6}, // 2: python
-    {'b', 7}, // 3: backend
-    {'f', 8}, // 4: frontend
-    {'j', 6}, // 5: junior
-    {'s', 6}, // 6: senior
-    {'c', 7}, // 7: chicken
-    {'p', 5}, // 8: pizza
-};
+    for (auto set : typeSets)
+        for (int t = 0; t < set.size(); t++)
+            if (str[i] == set[t].first)
+            {
+                i += set[t].second;
+                result.push_back(t + 1);
+                break;
+            }
 
-// string을 선별해 비트 마스킹된 int로 변환
-// left: score
-// right: bit masking | 1: cpp, 2: java, 4: python, 8: backend, 16: frontend
-//                    | 32: junior, 64: senior, 128:chicken, 256: pizza
-//                    | pizza / chicken/sen/jun/front / back/py/java/cpp
-pair<int, int> refineInfo(string str)
-{
-    int person = 0, t = 1, i = 0;
-
-    // 2개씩 처리를 위해 첫번째를 미리 처리
-    if (str[0] == types[0].first)
-    {
-        person = 1;
-        t = 3;
-        i = types[0].second + 1;
-    }
-
-    while (t <= 8)
-        if (str[i] == types[t].first)
-        {
-            person |= 1 << t;
-            i += types[t].second + 1;
-            t += t % 2 ? 2 : 1;
-        }
-        else
-            t++;
-
-    return {stoi(str.substr(i)), person};
+    result.push_back(stoi(str.substr(i)));
+    return result;
 }
-pair<int, int> refineQuery(string str)
+vector<int> refineQuery(string str)
 {
-    int person = 0, t = 1, i = 0;
+    vector<int> result;
+    int i = 0;
 
-    // 2개씩 처리를 위해 첫번째를 미리 처리
-    if (str[0] == types[0].first)
-    {
-        person = 1;
-        t = 3;
-        i = types[0].second + 5;
-    }
+    for (auto set : typeSets)
+        for (int t = 0; t < set.size(); t++)
+            if (str[i] == '-')
+            {
+                i += 6;
+                result.push_back(0);
+                break;
+            }
+            else if (str[i] == set[t].first)
+            {
+                i += set[t].second + 4;
+                result.push_back(t + 1);
+                break;
+            }
 
-    while (t <= 8)
-        // wildcard for query
-        if (str[i] == '-')
-        {
-            t += 2;
-            i += 6;
-        }
-        else if (str[i] == types[t].first)
-        {
-            person |= 1 << t;
-            i += types[t].second + 5;
-            t += t % 2 ? 2 : 1;
-        }
-        else
-            t++;
-
-    return {stoi(str.substr(i - 4)), person};
-}
-
-int lower_bound(vector<int> &nums, int key)
-{
-    int left = 0, mid, right = nums.size();
-
-    while (left < right)
-    {
-        mid = (left + right) / 2;
-        if (key <= nums[mid])
-            right = mid;
-        else
-            left = mid + 1;
-    }
-
-    return left;
+    result.push_back(stoi(str.substr(i - 4)));
+    return result;
 }
 
 vector<int> solution(vector<string> infos, vector<string> querys)
 {
-    vector<int> answer;
-    group people[1 << 9];
+    vector<int> answer, scores[4][3][3][3];
 
-    // 사용자 정제
+    // 점수 처리
     for (string info : infos)
     {
-        auto person = refineInfo(info);
-        vector<int> groups, bits;
-
-        // 비트 위치 파악
-        for (int n = 1 << 8; n; n >>= 1)
-            if (person.second & n)
-                bits.push_back(n);
-
-        // 모든 그룹에 점수 입력
-        for (int a = 0; a <= bits[0]; a += bits[0])
-            for (int b = 0; b <= bits[1]; b += bits[1])
-                for (int c = 0; c <= bits[2]; c += bits[2])
-                    for (int d = 0; d <= bits[3]; d += bits[3])
-                        people[a + b + c + d].scores.push_back(person.first);
+        auto p = refineInfo(info);
+        for (int i = 0; i <= p[0]; i += p[0])
+            for (int j = 0; j <= p[1]; j += p[1])
+                for (int k = 0; k <= p[2]; k += p[2])
+                    for (int l = 0; l <= p[3]; l += p[3])
+                        scores[i][j][k][l].push_back(p[4]);
     }
+
+    // 이분 탐색을 위한 정렬
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 3; j++)
+            for (int k = 0; k < 3; k++)
+                for (int l = 0; l < 3; l++)
+                    sort(scores[i][j][k][l].begin(), scores[i][j][k][l].end());
 
     // 쿼리 처리
     for (string query : querys)
     {
-        pair<int, int> rq = refineQuery(query);
-        group g = people[rq.second];
-        if (!g.sorted)
-        {
-            g.sorted = true;
-            sort(g.scores.begin(), g.scores.end());
-        }
-        answer.push_back(g.scores.size() - lower_bound(g.scores, rq.first));
+        vector<int> p = refineQuery(query);
+        vector<int> &sc = scores[p[0]][p[1]][p[2]][p[3]];
+
+        auto it = lower_bound(sc.begin(), sc.end(), p[4]);
+        answer.push_back(it == sc.end() ? 0 : sc.end() - it);
     }
 
     return answer;
@@ -157,6 +109,7 @@ int main(int argc, char *argv[])
     //                          "- and - and - and - 150"}))
     //     cout << num << ' ';
 
+    srand(time(0));
     vector<string> infos, querys;
     for (int i = 0; i < 50000; i++)
     {
@@ -166,7 +119,7 @@ int main(int argc, char *argv[])
         string d = rand() % 2 ? "pizza " : "chicken ";
         infos.push_back(a + b + c + d + to_string(rand() % 100 * 10));
     }
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 100000; i++)
     {
         string a = rand() % 2 ? (rand() % 2 ? "cpp" : "java") : (rand() % 2 ? "python" : "-");
         string b = rand() % 3 ? (rand() % 2 ? "backend" : "frontend") : "-";
