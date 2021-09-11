@@ -13,7 +13,7 @@ void archery(vector<int> &info, int n, int v, int k, int sc)
     if (k == 11)
     {
         // 최고점수 일 경우
-        if (sc >= score)
+        if (sc > score)
         {
             score = sc;
 
@@ -21,7 +21,22 @@ void archery(vector<int> &info, int n, int v, int k, int sc)
                 answer[i] = current[i];
             answer[10] += v;
         }
-        // TODO: 같은 점수 일 경우
+        // 같은 점수 일 경우
+        else if (sc == score)
+            for (int i = 10; i >= 0; i--)
+            {
+                // 원래 맞춘 경우가 정답일 경우 업데이트 안함
+                if (answer[i] > current[i])
+                    break;
+
+                // 가장 낮은 점수를 더 많이 맞힌 경우 업데이트
+                else if (current[i] > answer[i])
+                {
+                    for (int i = 0; i < 11; i++)
+                        answer[i] = current[i];
+                    answer[10] += v;
+                }
+            }
         return;
     }
 
