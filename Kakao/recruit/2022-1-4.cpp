@@ -71,7 +71,7 @@ vector<int> solution(int n, vector<int> info)
             sc += (10 - i) * (answer[i] > info[i] ? 1 : -1);
 
     // return answer;
-    return sc < 0 ? vector<int>(1, -1) : answer;
+    return sc <= 0 ? vector<int>(1, -1) : answer;
 }
 
 int main()

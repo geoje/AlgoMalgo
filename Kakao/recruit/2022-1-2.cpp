@@ -4,14 +4,14 @@
 #include <algorithm>
 using namespace std;
 
-bool isPrime(int num)
+bool isPrime(long long num)
 {
     if (num == 0 || num == 1)
         return false;
     else if (num == 2 || num == 3)
         return true;
 
-    for (int i = 2; i <= num / 2; i++)
+    for (long long i = 2; i <= num / 2; i++)
         if (num % i == 0)
             return false;
     return true;
@@ -20,7 +20,7 @@ bool isPrime(int num)
 int solution(int n, int k)
 {
     int answer = 0;
-    vector<int> nums;
+    vector<long long> nums;
 
     // k진수로 변환
     while (n)
@@ -31,7 +31,7 @@ int solution(int n, int k)
     reverse(nums.begin(), nums.end());
 
     // 0으로 분리하면서 소수 판별
-    for (int i : nums)
+    for (long long i : nums)
     {
         if (i == 0 && n > 0)
         {
@@ -56,7 +56,7 @@ int solution(int n, int k)
 
 int main()
 {
-    cout << solution(9, 3) << '\n';
+    cout << solution(1000000, 3) << '\n';
     cout << solution(437674, 3) << '\n';
     cout << solution(110011, 10) << '\n';
     return 0;
