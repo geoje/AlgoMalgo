@@ -50,7 +50,7 @@ vector<pii> bfs(int i, int j)
 int main(int argc, char *argv[])
 {
     cin.tie(0)->sync_with_stdio(0);
-    // freopen(argv[1], "r", stdin); // For Test
+    freopen(argv[1], "r", stdin); // For Test
 
     /* Input */
     cin >> n >> m;
@@ -70,6 +70,15 @@ int main(int argc, char *argv[])
             }
 
     /* Output */
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+            cout << (map[i][j] == '1' ? 0 : (int)map[i][j]);
+        cout << '\n';
+    }
+    cout << '\n';
+
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
