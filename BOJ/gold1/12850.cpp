@@ -3,21 +3,33 @@
 #include <iostream>
 using namespace std;
 
-const int MOD = 1'000'000'007;
+typedef long long ll;
+typedef vector<vector<ll>> matrix;
+matrix operator*(matrix &a, matrix &b)
+{
+    int s = a.size();
+    matrix c(s, vector<ll>(s));
+    for (int i = 0; i < s; i++)
+        for (int j = 0; j < s; j++)
+        {
+            for (int k = 0; k < s; k++)
+                c[i][j] += a[i][k] * b[k][j];
+            c[i][j] %= 1'000'000'007;
+        }
+    return c;
+}
 
-const vector<int> roads[8] = {
-    {1, 5},       //정보과학관
-    {0, 2, 5},    //전산관
-    {1, 3, 5, 6}, //신양관
-    {2, 4, 6},    //진리관
-    {3, 7},       //학생회관
-    {0, 1, 2, 6}, //미래관
-    {2, 3, 5, 7}, //한경직기념관
-    {4, 6}        //형남공학관
+matrix ans;
+matrix base = {
+    {0, 1, 0, 0, 1, 0, 0, 0},
+    {1, 0, 1, 0, 0, 1, 0, 0},
+    {0, 1, 0, 1, 0, 1, 1, 0},
+    {0, 0, 1, 0, 1, 0, 1, 0},
+    {0, 0, 0, 1, 0, 0, 0, 1},
+    {1, 1, 1, 0, 0, 0, 1, 0},
+    {0, 0, 1, 1, 0, 1, 0, 1},
+    {0, 0, 0, 0, 1, 0, 1, 0},
 };
-
-int d;
-long long dp[2][8];
 
 int main(int argc, char *argv[])
 {
@@ -25,25 +37,21 @@ int main(int argc, char *argv[])
     // freopen(argv[1], "r", stdin); // For Test
 
     /* Input */
+    int d;
     cin >> d;
+    ans.assign(8, vector<ll>(8));
+    for (int i = 0; i < 8; i++)
+        ans[i][i] = 1;
 
     /* Process */
-    long long *prev = dp[0], *cur = dp[1];
-    prev[0] = 1;
-    while (d--)
+    for (; d; d /= 2)
     {
-        for (int i = 0; i < 8; i++)
-        {
-            cur[i] = 0;
-            for (int j : roads[i])
-                cur[i] += prev[j];
-            cur[i] %= MOD;
-        }
-
-        swap(cur, prev);
+        if (d | 1)
+            ans = ans * base;
+        base = base * base;
     }
 
     /* Output */
-    cout << prev[0] << '\n';
+    cout << ans[0][0] << '\n';
     return 0;
 }
