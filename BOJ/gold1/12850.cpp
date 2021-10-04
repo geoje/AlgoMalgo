@@ -21,7 +21,7 @@ matrix operator*(matrix &a, matrix &b)
 
 matrix ans;
 matrix base = {
-    {0, 1, 0, 0, 1, 0, 0, 0},
+    {0, 1, 0, 0, 0, 1, 0, 0},
     {1, 0, 1, 0, 0, 1, 0, 0},
     {0, 1, 0, 1, 0, 1, 1, 0},
     {0, 0, 1, 0, 1, 0, 1, 0},
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     /* Process */
     for (; d; d /= 2)
     {
-        if (d | 1)
+        if (d & 1)
             ans = ans * base;
         base = base * base;
     }
