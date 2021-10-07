@@ -1,12 +1,23 @@
 #include <cstdio> // For Test
-#include <set>
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
 int n, m, k;
-set<int> cards;
-bool use[4000000] = {0};
+int cards[4000000], p[4000000];
+
+int find(int x)
+{
+    return x == p[x] ? x : (p[x] = find(p[x]));
+}
+
+void join(int x, int y)
+{
+    x = find(x);
+    y = find(y);
+    if (x != y)
+        p[x] = y;
+}
 
 int main(int argc, char *argv[])
 {
@@ -14,26 +25,22 @@ int main(int argc, char *argv[])
     // freopen(argv[1], "r", stdin); // For Test
 
     /* Input */
-    int card;
     cin >> n >> m >> k;
     for (int i = 0; i < m; i++)
     {
-        cin >> card;
-        cards.insert(card);
+        cin >> cards[i];
+        p[i] = i;
     }
+    sort(cards, cards + m);
 
     /* Process */
+    int card;
     while (k--)
     {
-        // 카드 입력
         cin >> card;
-
-        // 카드 선택
-        auto it = cards.upper_bound(card);
-
-        // 카드 사용
-        cout << *it << '\n';
-        cards.erase(it);
+        int i = find(upper_bound(cards, cards + m, card) - cards);
+        cout << cards[i] << '\n';
+        join(i, i + 1);
     }
 
     /* Output */
