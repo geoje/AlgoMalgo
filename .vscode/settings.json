@@ -65,6 +65,17 @@
     "set": "cpp",
     "hash_map": "cpp",
     "unordered_set": "cpp",
-    "bitset": "cpp"
+    "bitset": "cpp",
+    "charconv": "cpp",
+    "format": "cpp",
+    "locale": "cpp",
+    "mutex": "cpp",
+    "ratio": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "xlocbuf": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xloctime": "cpp"
   }
 }

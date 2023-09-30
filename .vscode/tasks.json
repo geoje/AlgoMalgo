@@ -4,9 +4,14 @@
     {
       "type": "cppbuild",
       "label": "C/C++: g++ 활성 파일 빌드",
-      "command": "/usr/bin/g++", // For Linux
-      // "command": "C:\\MinGW\\bin\\g++.exe", // For Window
-      "args": ["-g", "${file}", "-o", "${fileDirname}/${fileBasenameNoExtension}"],
+      // "command": "/usr/bin/g++", // For Linux
+      "command": "C:\\MinGW\\bin\\g++.exe", // For Window
+      "args": [
+        "-g",
+        "${file}",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}"
+      ],
       "options": {
         "cwd": "${fileDirname}"
       },
