@@ -1,12 +1,17 @@
 #include <vector>
 #include <iostream>
-#include <unordered_set>
+#include <unordered_map>
 using namespace std;
 
 string solution(vector<string> participant, vector<string> completion)
 {
-    string answer = "";
-    return answer;
+    unordered_map<string, int> m;
+    for (string c : completion)
+        m[c]++;
+    for (string p : participant)
+        if (--m[p] < 0)
+            return p;
+    return "";
 }
 
 int main()
