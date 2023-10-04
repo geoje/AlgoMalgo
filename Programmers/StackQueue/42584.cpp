@@ -10,8 +10,9 @@ vector<int> solution(vector<int> prices)
 
     for (int i = 0, j; i < prices.size(); i++)
     {
-        for (j = i; j < prices.size() && prices[i] <= prices[j]; j++)
-            ;
+        for (j = i; j < prices.size() - 1; j++)
+            if (prices[i] > prices[j])
+                break;
         answer.push_back(j - i);
     }
 
