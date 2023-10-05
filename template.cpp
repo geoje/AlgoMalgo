@@ -5,14 +5,6 @@ using namespace std;
 
 int n;
 
-void print(vector<int> &vs)
-{
-    cout << "[";
-    for (auto v : vs)
-        cout << v << ',';
-    cout << "]\n";
-}
-
 int main(int argc, char *argv[])
 {
     cin.tie(0)->sync_with_stdio(0);

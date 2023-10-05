@@ -28,7 +28,7 @@ int solution(vector<vector<int>> jobs)
     priority_queue<vector<int>, vector<vector<int>>, compareTake> tpq;
     while (pq.size())
     {
-        while (pq.top()[0] <= time)
+        while (pq.size() && pq.top()[0] <= time)
         {
             tpq.push(pq.top());
             pq.pop();
@@ -61,6 +61,6 @@ int solution(vector<vector<int>> jobs)
 
 int main()
 {
-    // cout << solution({{0, 3}, {1, 9}, {2, 6}}) << '\n';
+    cout << solution({{0, 3}, {1, 9}, {2, 6}}) << '\n';
     cout << solution({{0, 3}, {0, 4}, {4, 3}, {1, 3}, {1, 9}, {1, 2}, {2, 6}}) << '\n';
 }
