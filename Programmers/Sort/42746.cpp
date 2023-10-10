@@ -1,14 +1,29 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
+
+bool compare(string &a, string &b)
+{
+    return a + b > b + a;
+}
 
 string solution(vector<int> numbers)
 {
     string answer = "";
+    vector<string> numbersStr;
 
-    return answer;
+    for (int n : numbers)
+        numbersStr.push_back(to_string(n));
+
+    sort(numbersStr.begin(), numbersStr.end(), compare);
+
+    for (string s : numbersStr)
+        answer += s;
+
+    return answer[0] == '0' ? "0" : answer;
 }
 
 int main()
