@@ -1,8 +1,6 @@
-package BOJ.category.pq;
-
 import java.util.Scanner;
 
-public class p11000 {
+public class templateScanner {
     public static void main(String[] args) {
         // Init
         Scanner in = new Scanner(System.in);

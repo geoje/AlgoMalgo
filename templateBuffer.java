@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class template {
+public class templateBuffer {
     public static void main(String[] args) throws IOException {
         // Init
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,7 +17,7 @@ public class template {
         bw.flush();
     }
 
-    static int solution(int arg) {
-        return arg;
+    static int solution(int n) {
+        return n;
     }
 }
