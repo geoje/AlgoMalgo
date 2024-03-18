@@ -14,7 +14,8 @@ public class P11000 {
         int n = Integer.parseInt(st.nextToken());
 
         // Write
-        bw.write(String.format("%s", solution(n)));
+        int result = solution(n);
+        bw.write(String.format("%s", result));
         bw.flush();
     }
 

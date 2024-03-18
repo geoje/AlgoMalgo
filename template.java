@@ -12,7 +12,8 @@ public class template {
         int n = Integer.parseInt(st.nextToken());
 
         // Write
-        bw.write(String.format("%s", solution(n)));
+        int result = solution(n);
+        bw.write(String.format("%s", result));
         bw.flush();
     }
 
