@@ -68,5 +68,6 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp"
-  }
+  },
+  "java.debug.settings.onBuildFailureProceed": true
 }

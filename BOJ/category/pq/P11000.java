@@ -36,7 +36,6 @@ public class p11000 {
         for (var l : list) {
             pq.add(l);
 
-            while (!pq.isEmpty() && )
         }
 
         
