@@ -4,7 +4,7 @@ import java.util.*;
 
 record Lecture(int start, int end) {}
 
-public class p11000 {
+public class P11000 {
     
     public static void main(String[] args) {
         // Init

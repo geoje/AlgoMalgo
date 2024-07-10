@@ -1,3 +1,5 @@
+package BOJ.wooteco.aru1;
+
 import java.util.*;
 
 public class p5619 {
