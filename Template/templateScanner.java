@@ -1,3 +1,4 @@
+package Template;
 import java.util.Scanner;
 
 public class templateScanner {
