@@ -1,4 +1,7 @@
 {
+  "files.associations": {
+    "limits": "cpp"
+  }
   //   "explorer.compactFolders": false,
   //   "explorer.confirmDragAndDrop": false,
   //   "editor.suggest.showConstants": false,
